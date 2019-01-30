@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+    </style>
+</head>
+<body onload="run()">
+
+    <!--<webcam id="webcamId"> Webcam </webcam>-->
+
+    <!--<video id="videoId"> Video </video>-->
+
+    <canvas id="canvasId"  style="border:1px solid #000000;"> Canvas </canvas>
+
+
+</body>
+
+<script src="./dist/jeelizFaceTransfer.js">
+
+</script>
+<script>
+
+    var api = JEEFACETRANSFERAPI;
+
+    function run(){
+        console.log("About to start Status: "+ JEEFACETRANSFERAPI.ready);
+
+
+        if(JEEFACETRANSFERAPI.ready){
+            console.log("Face is ready to initialize");
+            facetransferSetup();
+            init();
+        }
+    }
+
+    function facetransferSetup(){
+        JEEFACETRANSFERAPI.set_size(400, 400);
+        JEEFACETRANSFERAPI.setAudio(true);
+//        JEEFACETRANSFERAPI.onContextLost(function(){
+//            console.log("context lost");
+//        });
+        JEEFACETRANSFERAPI.onWebcamAsk(function (){
+            console.log("About to ask for access");
+        });
+        JEEFACETRANSFERAPI.onWebcamGet(function (){
+            console.log("Gotten Access to webcam ");
+        });
+        JEEFACETRANSFERAPI.onload( function (){
+            console.log("API loaded");
+        });
+    }
+
+
+    function init(){
+        var spec = {
+            canvasId:"canvasId",
+            NNCpath:"./dist/",
+            callbackReady: function(errCode) {
+                console.log("Face ready for Liveness Errors "+ errCode);
+            },
+            videoSettings: {idealWidth: 320, idealHeight: 240}
+
+        };
+        JEEFACETRANSFERAPI.init(spec);
+    }
+
+    var action = function(){
+        //do something
+        console.log("Doing something");
+    }
+
+
+
+</script>
+
+</html>
